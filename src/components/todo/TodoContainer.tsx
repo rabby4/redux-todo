@@ -1,4 +1,5 @@
-import { useAppSelector } from "@/redux/hook"
+/* eslint-disable @typescript-eslint/no-explicit-any */
+// import { useAppSelector } from "@/redux/hook"
 import AddTodoModal from "./AddTodoModal"
 import TodoCard from "./TodoCard"
 import TodoFilter from "./TodoFilter"
@@ -12,6 +13,9 @@ const TodoContainer = () => {
 
 	const { data: todos, isLoading, isError } = useGetTodosQuery(undefined)
 
+	if (isLoading) return <p>Loading...</p>
+	if (isError) return <p>Error found</p>
+
 	return (
 		<div>
 			<div className="flex justify-between mb-5">
@@ -23,7 +27,7 @@ const TodoContainer = () => {
 					<p>There is no task pending</p>
 				</div> */}
 				<div className="bg-white p-5 w-full h-full rounded-lg space-y-3">
-					{todos?.data?.map((item) => (
+					{todos?.data?.map((item: any) => (
 						<TodoCard {...item} />
 					))}
 				</div>
