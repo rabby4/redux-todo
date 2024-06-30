@@ -3,9 +3,10 @@ import { Button } from "../ui/button"
 import PenSquare from "@/assets/icons/PenSquare"
 import { useAppDispatch } from "@/redux/hook"
 import { removeTodo, toggleComplete } from "@/redux/features/todoSlice"
+import { useUpdateTodoMutation } from "@/redux/api/api"
 
 type TTodoCardProps = {
-	id: string
+	_id: string
 	title: string
 	description: string
 	isCompleted?: boolean
@@ -15,14 +16,22 @@ type TTodoCardProps = {
 const TodoCard = ({
 	title,
 	description,
-	id,
+	_id,
 	isCompleted,
 	priority,
 }: TTodoCardProps) => {
-	const dispatch = useAppDispatch()
+	const [updateTodo, { isLoading }] = useUpdateTodoMutation()
 
 	const toggleState = () => {
-		dispatch(toggleComplete(id))
+		const taskData = {
+			title,
+			description,
+			priority,
+			isCompleted: !isCompleted,
+		}
+		const options = { id: _id, data: taskData }
+		console.log(taskData)
+		updateTodo(options)
 	}
 
 	return (
@@ -34,6 +43,7 @@ const TodoCard = ({
 					name="complete"
 					id="complete"
 					className="mr-3"
+					defaultChecked={isCompleted}
 				/>
 				<p className="font-semibold flex-1">{title}</p>
 				<div className="flex-1 flex items-center gap-2">
